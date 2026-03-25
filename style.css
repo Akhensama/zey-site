@@ -1,0 +1,271 @@
+:root {
+  --width: 680px;
+  --bg: #fdfaf6;
+  --text: #44403c;
+  --heading: #5c4433;
+  --link: #8b6f5a;
+  --link-hover: #982c61;
+  --muted: #9e9189;
+  --border: #e8e0d8;
+  --tag-bg: #f0ebe4;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text);
+  background: var(--bg);
+  max-width: var(--width);
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ── Nav ── */
+nav {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 64px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+}
+
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.15s;
+}
+
+nav a:hover,
+nav a.active {
+  color: var(--heading);
+}
+
+/* ── Typography ── */
+h1 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--heading);
+  margin-bottom: 12px;
+}
+
+h2 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--heading);
+  margin: 48px 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+h3 {
+  font-family: Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: normal;
+  color: var(--heading);
+}
+
+p {
+  margin-bottom: 1.2em;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 40px 0;
+}
+
+/* ── Home intro ── */
+.intro {
+  margin-bottom: 56px;
+}
+
+.intro p {
+  color: var(--text);
+  max-width: 540px;
+}
+
+/* ── Post list ── */
+.post-list {
+  list-style: none;
+}
+
+.post-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-list li:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.post-list a {
+  color: var(--text);
+  font-size: 0.98rem;
+}
+
+.post-list a:hover {
+  color: var(--link-hover);
+}
+
+.post-list .date {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Tags ── */
+.tag {
+  display: inline-block;
+  background: var(--tag-bg);
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-right: 6px;
+  letter-spacing: 0.03em;
+}
+
+/* ── Thesis page ── */
+.thesis-meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 24px;
+  line-height: 1.8;
+}
+
+.thesis-abstract {
+  border-left: 2px solid var(--border);
+  padding-left: 20px;
+  color: var(--text);
+  font-size: 0.97rem;
+}
+
+/* ── Readings ── */
+.reading-item {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.reading-item:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.reading-item .book-title {
+  color: var(--text);
+  font-style: italic;
+}
+
+.reading-item .book-author {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ── Work ── */
+.work-item {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.work-item:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.work-item .role {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+/* ── Gallery ── */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.gallery-grid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+  border-radius: 2px;
+}
+
+/* ── Footer ── */
+footer {
+  margin-top: 80px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+footer a {
+  color: var(--muted);
+  transition: color 0.15s;
+}
+
+footer a:hover {
+  color: var(--heading);
+}
+
+footer img {
+  width: 18px;
+  height: 18px;
+  opacity: 0.5;
+  transition: opacity 0.15s;
+  display: block;
+}
+
+footer a:hover img {
+  opacity: 0.9;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  body {
+    padding: 32px 18px 60px;
+  }
+
+  nav {
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
