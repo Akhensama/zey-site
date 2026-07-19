@@ -100,7 +100,6 @@ hr {
 
 .intro p {
   color: var(--text);
-  max-width: 540px;
 }
 
 /* ── Post list ── */
