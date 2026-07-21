@@ -584,7 +584,7 @@ footer a { color: var(--muted); }
 <section class="wide fade-in">
   <p class="section-label">Interactive</p>
   <h2>Explore the similarity matrices</h2>
-  <p>Toggle between the synesthesia frequency data and each embedding condition. Color intensity reflects the value — red for frequency, green for Word2Vec, purple for RoBERTa, teal for Voyage, blue for GPT. Hover any cell for details.</p>
+  <p>Toggle between the synesthesia frequency data and each embedding condition. Color intensity reflects the value. Red is for frequency, green for Word2Vec, purple for RoBERTa, teal for Voyage, blue for GPT. Hover any cell for details.</p>
 
   <div class="matrix-controls">
     <button class="matrix-btn active" onclick="showMatrix('freq', this)">Synesthesia frequency</button>
@@ -623,7 +623,7 @@ footer a { color: var(--muted); }
 <section class="fade-in">
   <p class="section-label">Key finding</p>
   <h2>The phrasing effect (GPT)</h2>
-  <p>All three GPT conditions use the same model and the same 26 letters — only the wording changes. Asking for <span class="inline-code">"the letter A"</span> instead of bare <span class="inline-code">"A"</span> shifts the correlation from near-zero to strongly significant. RoBERTa-large shows the same jump (ρ = 0.41 with full phrasing), while Word2Vec is flat regardless.</p>
+  <p>The three GPT conditions use the same model and the same 26 letters, changing only the wording. Asking for <span class="inline-code">"the letter A"</span> instead of bare <span class="inline-code">"A"</span> shifts the correlation from near-zero to strongly significant. RoBERTa-large shows the same jump (ρ = 0.41 with full phrasing), while Word2Vec is flat regardless.</p>
 
   <div class="phrasing-vis" id="phrasing-vis"></div>
 </section>
