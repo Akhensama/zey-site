@@ -32,8 +32,7 @@
   <h2>Abstract</h2>
   <div class="thesis-abstract">
     <p>
-      This thesis examines physiological markers of separation distress within Panksepp's Affective
-      Neuroscience, focusing on the distinction between the PANIC and GRIEF systems with
+      This thesis examines physiological markers of separation distress within Panksepp's <span class="sidenote-link">Affective Neuroscience<span class="sidenote"><span>Interdisciplinary field studying the neural mechanisms underlying emotions. Pioneered by neuroscientist Jaak Panksepp, AN maps how subcortical brain circuits (eg, the amygdala and periaqueductal gray) and neurochemicals process core emotions that are foundational to behavior.</span><span>The field primarily approaches emotion from a biological and evolutionary perspective, proposing that humans and other mammals share several hardwired, subcortical emotional systems. According to the framework, there are seven foundational primary emotional systems.</span></span></span>, focusing on the distinction between the PANIC and GRIEF systems with
       secondary discussion of the SEEKING system. Building on the CHOice and MOtivation
       (CHOMO) project, the study explores how these primary affective systems manifest in
       autonomic arousal, as indexed by Skin Conductance Responses (SCRs), during the perception
@@ -67,6 +66,43 @@
       <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/x.svg" alt="X / Twitter">
     </a>
   </footer>
+
+  <script>
+    document.querySelectorAll('.sidenote-link').forEach(function (trigger) {
+      var note = trigger.querySelector('.sidenote');
+      if (!note) return;
+      document.body.appendChild(note);
+
+      function show() {
+        var t = trigger.getBoundingClientRect();
+        var b = document.body.getBoundingClientRect();
+        var gap = 32;
+        var width = note.offsetWidth || 260;
+        var left = b.right + gap;
+        var top = t.top;
+        if (left + width > window.innerWidth - 16) {
+          left = t.left;
+          top = t.bottom + 10;
+          note.classList.add('sidenote-below');
+        } else {
+          note.classList.remove('sidenote-below');
+        }
+        left += window.scrollX;
+        top += window.scrollY;
+        note.style.left = left + 'px';
+        note.style.top = top + 'px';
+        note.classList.add('visible');
+      }
+      function hide() {
+        note.classList.remove('visible');
+      }
+      trigger.addEventListener('mouseenter', show);
+      trigger.addEventListener('mouseleave', hide);
+      trigger.addEventListener('focus', show);
+      trigger.addEventListener('blur', hide);
+      window.addEventListener('scroll', hide, { passive: true });
+    });
+  </script>
 
 </body>
 </html>
