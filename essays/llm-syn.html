@@ -4,26 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Do Language Models Pick Up Synesthetic Associations?</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --black:  #1a1a1a;
-  --white:  #f5f3ef;
-  --red:    #e63946;
-  --green:  #2dc653;
-  --yellow: #f5c842;
-  --blue:   #4361ee;
-  --brown:  #8b4513;
-  --purple: #9b2dca;
-  --pink:   #f72585;
-  --orange: #f4a261;
-  --gray:   #9e9e9e;
   --ink:    #1c1c1e;
   --muted:  #6b6b6b;
-  --bg:     #faf8f4;
-  --border: #e5e0d8;
+  --bg:     #faf9f7;
+  --border: #dedad2;
+  --accent: #3a6ea5;
 }
 
 html { scroll-behavior: smooth; }
@@ -36,70 +26,61 @@ body {
   font-size: 16px;
 }
 
-/* ── HERO ────────────────────────────────────────────────────────────────── */
+/* ── HEADER ──────────────────────────────────────────────────────────────── */
 .hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 4rem 2rem;
-  position: relative;
-  overflow: hidden;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 4rem 2rem 3rem;
 }
 
 .hero-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.4rem, 6vw, 5rem);
-  font-weight: 700;
-  line-height: 1.1;
-  max-width: 800px;
-  margin-bottom: 1.2rem;
-  letter-spacing: -0.02em;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: clamp(1.7rem, 3.6vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1.3;
+  max-width: 680px;
+  margin-bottom: 1rem;
+  letter-spacing: -0.005em;
 }
 
 .hero-title em {
   font-style: italic;
-  color: var(--red);
 }
 
 .hero-sub {
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--muted);
-  max-width: 520px;
-  margin-bottom: 3.5rem;
-  font-weight: 300;
+  max-width: 600px;
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
 /* Letter mosaic */
 .letter-mosaic {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px;
-  max-width: 700px;
-  margin-bottom: 3rem;
+  gap: 4px;
+  max-width: 620px;
 }
 
 .letter-tile {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 600;
   cursor: default;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease;
   position: relative;
 }
 
 .letter-tile:hover {
-  transform: scale(1.18) translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  box-shadow: 0 0 0 2px var(--ink) inset;
   z-index: 10;
 }
 
@@ -112,132 +93,91 @@ body {
   background: var(--ink);
   color: #fff;
   font-family: 'Inter', sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 500;
   padding: 4px 8px;
-  border-radius: 5px;
+  border-radius: 4px;
   white-space: nowrap;
   pointer-events: none;
 }
 
 .letter-tile:hover .tooltip { display: block; }
 
-.scroll-hint {
-  font-size: 0.78rem;
-  color: var(--muted);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(6px); }
-}
-
 /* ── SECTIONS ────────────────────────────────────────────────────────────── */
 section {
-  max-width: 820px;
+  max-width: 760px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 3rem 2rem;
 }
 
 section.wide {
-  max-width: 1100px;
+  max-width: 980px;
 }
 
 .section-label {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.6rem;
 }
 
 h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 1.2rem;
-  letter-spacing: -0.01em;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: clamp(1.3rem, 2.2vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 1rem;
 }
 
 h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 0.6rem;
-  margin-top: 2rem;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  margin-top: 1.6rem;
 }
 
 p { margin-bottom: 1rem; color: #3a3a3a; }
 p:last-child { margin-bottom: 0; }
 
 .lead {
-  font-size: 1.15rem;
+  font-size: 1.02rem;
   color: var(--ink);
   font-weight: 400;
-  line-height: 1.75;
+  line-height: 1.7;
 }
 
 /* ── STAT CARDS ──────────────────────────────────────────────────────────── */
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
-  margin: 2.5rem 0;
+  margin: 2rem 0;
 }
 
 .stat-card {
   background: #fff;
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 1.4rem 1.2rem;
+  border-radius: 4px;
+  padding: 1.1rem 1rem;
   text-align: center;
 }
 
 .stat-card .num {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 600;
   line-height: 1;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.35rem;
+  color: var(--ink);
 }
 
 .stat-card .label {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   color: var(--muted);
   font-weight: 500;
-}
-
-/* ── CALLOUT ─────────────────────────────────────────────────────────────── */
-.callout {
-  background: var(--ink);
-  color: #fff;
-  border-radius: 16px;
-  padding: 2.5rem;
-  margin: 2rem 0;
-}
-
-.callout h3 {
-  font-family: 'Playfair Display', serif;
-  color: #fff;
-  font-size: 1.5rem;
-  margin-top: 0;
-  margin-bottom: 0.75rem;
-}
-
-.callout p { color: rgba(255,255,255,0.8); }
-
-.callout .rho {
-  font-size: 3rem;
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  color: var(--orange);
-  line-height: 1;
-  margin-bottom: 0.3rem;
 }
 
 /* ── DIVIDER ─────────────────────────────────────────────────────────────── */
@@ -247,31 +187,21 @@ p:last-child { margin-bottom: 0; }
   margin: 0 2rem;
 }
 
-.section-break {
-  text-align: center;
-  padding: 3rem 2rem 1rem;
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
 /* ── INTERACTIVE MATRIX ──────────────────────────────────────────────────── */
 .matrix-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.2rem;
+  gap: 0.4rem;
+  margin-bottom: 1.1rem;
 }
 
 .matrix-btn {
-  padding: 0.45rem 1rem;
-  border-radius: 99px;
-  border: 1.5px solid var(--border);
+  padding: 0.4rem 0.85rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
   background: #fff;
   font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
@@ -288,7 +218,7 @@ p:last-child { margin-bottom: 0; }
 .matrix-wrap {
   overflow-x: auto;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 4px;
   background: #fff;
 }
 
@@ -323,9 +253,9 @@ table.matrix td {
 }
 
 table.matrix td.letter-col {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Source Serif 4', Georgia, serif;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 600;
   padding-left: 14px;
   text-align: left;
   color: var(--ink);
@@ -333,7 +263,7 @@ table.matrix td.letter-col {
   background: #fff !important;
 }
 
-table.matrix tr:hover td { filter: brightness(0.93); }
+table.matrix tr:hover td { filter: brightness(0.96); }
 
 .cell-tooltip {
   display: none;
@@ -343,7 +273,7 @@ table.matrix tr:hover td { filter: brightness(0.93); }
   font-family: 'Inter', sans-serif;
   font-size: 0.72rem;
   padding: 5px 10px;
-  border-radius: 6px;
+  border-radius: 4px;
   pointer-events: none;
   z-index: 100;
   white-space: nowrap;
@@ -353,7 +283,7 @@ table.matrix tr:hover td { filter: brightness(0.93); }
 .results-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 4px;
   background: #fff;
   margin: 1.5rem 0;
 }
@@ -368,35 +298,32 @@ table.results th {
   padding: 10px 16px;
   text-align: left;
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--muted);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   border-bottom: 1px solid var(--border);
 }
 
 table.results td {
   padding: 10px 16px;
-  border-bottom: 1px solid #f0ece4;
+  border-bottom: 1px solid #eeeae2;
 }
 
 table.results tr:last-child td { border-bottom: none; }
 
-table.results tr.gpt-row td     { background: #fdfaf5; }
-table.results tr.roberta-row td { background: #fdf8ff; }
-table.results tr.voyage-row td  { background: #f5fdff; }
-table.results tr.best-row td    { background: #fff8f0; font-weight: 600; }
+table.results tr.best-row td { background: #f6f5f1; font-weight: 600; }
 
 .sig-badge {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  padding: 2px 7px;
-  border-radius: 4px;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 3px;
   font-weight: 600;
 }
 
-.sig-badge.sig { background: #fff0e0; color: #c85000; }
-.sig-badge.ns  { background: #f0f0f0; color: var(--muted); }
+.sig-badge.sig { background: #eaf0f6; color: var(--accent); }
+.sig-badge.ns  { background: #efeee9; color: var(--muted); }
 
 .rho-bar {
   display: inline-flex;
@@ -406,8 +333,8 @@ table.results tr.best-row td    { background: #fff8f0; font-weight: 600; }
 
 .rho-track {
   width: 80px;
-  height: 6px;
-  background: #f0ece4;
+  height: 5px;
+  background: #ece9e2;
   border-radius: 3px;
   overflow: hidden;
 }
@@ -415,7 +342,7 @@ table.results tr.best-row td    { background: #fff8f0; font-weight: 600; }
 .rho-fill {
   height: 100%;
   border-radius: 3px;
-  background: var(--orange);
+  background: var(--accent);
 }
 
 /* ── PHRASING EFFECT ────────────────────────────────────────────────────── */
@@ -428,40 +355,40 @@ table.results tr.best-row td    { background: #fff8f0; font-weight: 600; }
 
 .phrasing-row {
   display: grid;
-  grid-template-columns: 220px 1fr 80px;
+  grid-template-columns: 210px 1fr 76px;
   align-items: center;
   gap: 1rem;
 }
 
 .phrasing-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--ink);
 }
 
 .phrasing-track {
-  height: 28px;
-  background: #f0ece4;
-  border-radius: 6px;
+  height: 24px;
+  background: #ece9e2;
+  border-radius: 3px;
   overflow: hidden;
   position: relative;
 }
 
 .phrasing-fill {
   height: 100%;
-  border-radius: 6px;
+  border-radius: 3px;
   display: flex;
   align-items: center;
   padding-left: 10px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: #fff;
-  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  transition: width 0.6s ease;
 }
 
 .phrasing-rho {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--muted);
   text-align: right;
@@ -477,8 +404,8 @@ table.results tr.best-row td    { background: #fff8f0; font-weight: 600; }
 }
 
 .hits-letter-label {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -487,34 +414,31 @@ table.results tr.best-row td    { background: #fff8f0; font-weight: 600; }
 
 .hits-cell {
   aspect-ratio: 1;
-  border-radius: 6px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.65rem;
   font-weight: 600;
-  transition: transform 0.1s;
   cursor: default;
   position: relative;
 }
-
-.hits-cell:hover { transform: scale(1.2); z-index: 10; }
 
 /* ── CODE / QUOTE ────────────────────────────────────────────────────────── */
 .inline-code {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.82em;
-  background: #f0ece4;
+  background: #efeee9;
   padding: 1px 5px;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 blockquote {
-  border-left: 3px solid var(--orange);
+  border-left: 3px solid var(--border);
   padding: 0.8rem 1.2rem;
   margin: 1.5rem 0;
-  background: #fff8f0;
-  border-radius: 0 8px 8px 0;
+  background: #f6f5f1;
+  border-radius: 0 4px 4px 0;
   font-style: italic;
   color: #555;
 }
@@ -529,29 +453,22 @@ footer {
 }
 
 footer a { color: var(--muted); }
-
-/* ── FADE IN ─────────────────────────────────────────────────────────────── */
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.fade-in.visible { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
 
-<!-- ── HERO ─────────────────────────────────────────────────────────────── -->
+<!-- ── HEADER ───────────────────────────────────────────────────────────── -->
 <div class="hero">
   <p class="section-label">Experiment</p>
-  <h1 class="hero-title">Do Language Models Pick Up <em>Synesthetic</em> Associations?</h1>
+  <h1 class="hero-title">Do Language Models Pick Up Synesthetic Associations?</h1>
   <p class="hero-sub">A small study on grapheme-color synesthesia and whether embedding spaces reflect our most common letter–color associations.</p>
   <div class="letter-mosaic" id="mosaic"></div>
-  <p class="scroll-hint">↓ scroll</p>
 </div>
 
+<hr class="divider">
+
 <!-- ── INTRO ─────────────────────────────────────────────────────────────── -->
-<section class="fade-in">
+<section>
   <p class="section-label">Background</p>
   <h2>Synesthesia &amp; this project</h2>
   <p class="lead">Grapheme-color synesthesia is a perceptual phenomenon in which written letters and numbers automatically evoke specific color experiences. For a synesthete, for instance, A might always appear (or feel like) red. The associations are stable across time and some can be surprisingly consistent across individuals.</p>
@@ -560,19 +477,19 @@ footer a { color: var(--muted); }
 
   <div class="stats">
     <div class="stat-card">
-      <div class="num" style="color:var(--blue)">286</div>
+      <div class="num">286</div>
       <div class="label">letter–color pairs tested</div>
     </div>
     <div class="stat-card">
-      <div class="num" style="color:var(--purple)">12</div>
+      <div class="num">12</div>
       <div class="label">embedding conditions</div>
     </div>
     <div class="stat-card">
-      <div class="num" style="color:var(--orange)">ρ = .43</div>
+      <div class="num">ρ = .43</div>
       <div class="label">best Spearman correlation</div>
     </div>
     <div class="stat-card">
-      <div class="num" style="color:var(--green)">10 / 26</div>
+      <div class="num">10 / 26</div>
       <div class="label">best hit rate (38%)</div>
     </div>
   </div>
@@ -581,7 +498,7 @@ footer a { color: var(--muted); }
 <hr class="divider">
 
 <!-- ── INTERACTIVE MATRIX ─────────────────────────────────────────────────── -->
-<section class="wide fade-in">
+<section class="wide">
   <p class="section-label">Interactive</p>
   <h2>Explore the similarity matrices</h2>
   <p>Toggle between the synesthesia frequency data and each embedding condition. Color intensity reflects the value. Red is for frequency, green for Word2Vec, purple for RoBERTa, teal for Voyage, blue for GPT. Hover any cell for details.</p>
@@ -608,7 +525,7 @@ footer a { color: var(--muted); }
 </section>
 
 <!-- ── RESULTS ────────────────────────────────────────────────────────────── -->
-<section class="fade-in">
+<section>
   <p class="section-label">Results</p>
   <h2>How well does each model predict synesthetic associations?</h2>
   <p>Spearman ρ measures overall rank correlation across all 286 letter–color pairs. Hit rate counts how often the model's top-similarity color for each letter matches the most common synesthetic color.</p>
@@ -620,7 +537,7 @@ footer a { color: var(--muted); }
 </section>
 
 <!-- ── PHRASING EFFECT ────────────────────────────────────────────────────── -->
-<section class="fade-in">
+<section>
   <p class="section-label">Key finding</p>
   <h2>The phrasing effect (GPT)</h2>
   <p>The three GPT conditions use the same model and the same 26 letters, changing only the wording. Asking for <span class="inline-code">"the letter A"</span> instead of bare <span class="inline-code">"A"</span> shifts the correlation from near-zero to strongly significant. RoBERTa-large shows the same jump (ρ = 0.41 with full phrasing), while Word2Vec is flat regardless.</p>
@@ -629,7 +546,7 @@ footer a { color: var(--muted); }
 </section>
 
 <!-- ── HITS GRID ───────────────────────────────────────────────────────────── -->
-<section class="fade-in">
+<section>
   <p class="section-label">Per-letter breakdown</p>
   <h2>Which letters does GPT get right?</h2>
   <p>For each letter, did the model's top-similarity color match the most common synesthetic color? Cell color = that letter's modal synesthetic color.</p>
@@ -640,40 +557,40 @@ footer a { color: var(--muted); }
 <hr class="divider">
 
 <!-- ── MODELS ─────────────────────────────────────────────────────────────── -->
-<section class="fade-in">
+<section>
   <p class="section-label">Methods</p>
   <h2>Embedding models used</h2>
   <p>Five model families were tested, each in one or more phrasing conditions. For each condition, cosine similarity was computed between every letter embedding and every color embedding, producing a 26 × 11 matrix.</p>
 
   <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; margin:2rem 0">
 
-    <div style="background:#fff; border:1px solid var(--border); border-radius:14px; padding:1.4rem">
-      <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Static</div>
-      <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.5rem">Word2Vec</div>
+    <div style="background:#fff; border:1px solid var(--border); border-radius:4px; padding:1.3rem">
+      <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Static</div>
+      <div style="font-family:'Source Serif 4',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">Word2Vec</div>
       <p style="font-size:0.85rem;color:#555;margin:0">Distributional embeddings trained by predicting surrounding words. Tested on Google News (3B words) and a custom literary corpus (~50 Project Gutenberg novels). Vectors are fixed — context has no effect. Phrasing a query as "letter A" is done by averaging the vectors for "letter" and "A".</p>
     </div>
 
-    <div style="background:#fff; border:1px solid var(--border); border-radius:14px; padding:1.4rem">
-      <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Static</div>
-      <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.5rem">GloVe Twitter</div>
+    <div style="background:#fff; border:1px solid var(--border); border-radius:4px; padding:1.3rem">
+      <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Static</div>
+      <div style="font-family:'Source Serif 4',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">GloVe Twitter</div>
       <p style="font-size:0.85rem;color:#555;margin:0">Global Vectors for Word Representation, trained on 2B tweets (200-dimensional). The informal, culturally-saturated nature of Twitter text makes this the strongest static baseline, with a small but significant correlation (ρ = 0.16).</p>
     </div>
 
-    <div style="background:#fdf8ff; border:1px solid #e8d8f8; border-radius:14px; padding:1.4rem">
-      <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#8b5cf6;margin-bottom:0.4rem">Contextual · Large</div>
-      <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.5rem">RoBERTa-large</div>
+    <div style="background:#fff; border:1px solid var(--border); border-radius:4px; padding:1.3rem">
+      <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Contextual · Large</div>
+      <div style="font-family:'Source Serif 4',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">RoBERTa-large</div>
       <p style="font-size:0.85rem;color:#555;margin:0"><span class="inline-code">all-roberta-large-v1</span> via Sentence Transformers. A 24-layer BERT-style encoder fine-tuned for semantic similarity. Shows the same phrasing effect as GPT: near-zero with bare letters, ρ = 0.41 with "the letter A" — and uniquely gets A → Red correct.</p>
     </div>
 
-    <div style="background:#f5fdff; border:1px solid #c8eef5; border-radius:14px; padding:1.4rem">
-      <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#0891b2;margin-bottom:0.4rem">Contextual · Retrieval</div>
-      <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.5rem">Voyage-3</div>
+    <div style="background:#fff; border:1px solid var(--border); border-radius:4px; padding:1.3rem">
+      <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Contextual · Retrieval</div>
+      <div style="font-family:'Source Serif 4',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">Voyage-3</div>
       <p style="font-size:0.85rem;color:#555;margin:0">Voyage AI's general-purpose retrieval model. Shows significant signal with full phrasing (ρ = 0.22, p &lt; 0.001), weaker than GPT or RoBERTa. Bare and "letter A" conditions are flat. The phrasing effect is present but attenuated.</p>
     </div>
 
-    <div style="background:#fdfaf5; border:1px solid #ede8dc; border-radius:14px; padding:1.4rem">
-      <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c85000;margin-bottom:0.4rem">Contextual · LLM</div>
-      <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.5rem">GPT (text-embedding-3-small)</div>
+    <div style="background:#fff; border:1px solid var(--border); border-radius:4px; padding:1.3rem">
+      <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Contextual · LLM</div>
+      <div style="font-family:'Source Serif 4',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">GPT (text-embedding-3-small)</div>
       <p style="font-size:0.85rem;color:#555;margin:0">OpenAI's <span class="inline-code">text-embedding-3-small</span>. The strongest overall performer (ρ = 0.43 with "letter A"). Gets 10/26 modal colors right with the full "the letter A" / "the color" phrasing — the highest hit rate — but misses A → Red in all three conditions.</p>
     </div>
 
@@ -838,19 +755,19 @@ buildMatrix('freq');
 
 // ── Results table ──────────────────────────────────────────────────────────
 const RESULTS = [
-  { label: 'RoBERTa-large — "A"',                        rho:  0.1031, p: 0.0817, hits: 4,  sig: 'n.s.', type: 'roberta' },
-  { label: 'RoBERTa-large — "letter A"',                 rho:  0.1030, p: 0.0820, hits: 3,  sig: 'n.s.', type: 'roberta' },
-  { label: 'RoBERTa-large — "the letter A"',             rho:  0.4079, p: 0.0000, hits: 6,  sig: '***',  type: 'roberta' },
-  { label: 'Voyage-3 — "A"',                             rho:  0.0864, p: 0.1450, hits: 6,  sig: 'n.s.', type: 'voyage' },
-  { label: 'Voyage-3 — "letter A"',                      rho:  0.0455, p: 0.4439, hits: 7,  sig: 'n.s.', type: 'voyage' },
-  { label: 'Voyage-3 — "the letter A"',                  rho:  0.2226, p: 0.0001, hits: 6,  sig: '***',  type: 'voyage' },
-  { label: 'GPT — "A" / "red"',                          rho:  0.1024, p: 0.0838, hits: 4,  sig: 'n.s.', type: 'gpt' },
-  { label: 'GPT — "letter A" / "red"',                   rho:  0.4329, p: 0.0000, hits: 5,  sig: '***',  type: 'gpt', best: true },
-  { label: 'GPT — "the letter A" / "the color"',         rho:  0.3381, p: 0.0000, hits: 10, sig: '***',  type: 'gpt' },
-  { label: 'GloVe Twitter — "a"',                        rho:  0.1593, p: 0.0069, hits: 3,  sig: '**',   type: 'w2v' },
-  { label: 'W2V Google News — "A"',                      rho:  0.1012, p: 0.0877, hits: 3,  sig: 'n.s.', type: 'w2v' },
-  { label: 'W2V Google News — "letter A"',               rho:  0.1132, p: 0.0558, hits: 2,  sig: 'n.s.', type: 'w2v' },
-  { label: 'W2V Google News — "the letter A"',           rho:  0.0928, p: 0.1173, hits: 4,  sig: 'n.s.', type: 'w2v' },
+  { label: 'RoBERTa-large — "A"',                        rho:  0.1031, p: 0.0817, hits: 4,  sig: 'n.s.' },
+  { label: 'RoBERTa-large — "letter A"',                 rho:  0.1030, p: 0.0820, hits: 3,  sig: 'n.s.' },
+  { label: 'RoBERTa-large — "the letter A"',             rho:  0.4079, p: 0.0000, hits: 6,  sig: '***'  },
+  { label: 'Voyage-3 — "A"',                             rho:  0.0864, p: 0.1450, hits: 6,  sig: 'n.s.' },
+  { label: 'Voyage-3 — "letter A"',                      rho:  0.0455, p: 0.4439, hits: 7,  sig: 'n.s.' },
+  { label: 'Voyage-3 — "the letter A"',                  rho:  0.2226, p: 0.0001, hits: 6,  sig: '***'  },
+  { label: 'GPT — "A" / "red"',                          rho:  0.1024, p: 0.0838, hits: 4,  sig: 'n.s.' },
+  { label: 'GPT — "letter A" / "red"',                   rho:  0.4329, p: 0.0000, hits: 5,  sig: '***', best: true },
+  { label: 'GPT — "the letter A" / "the color"',         rho:  0.3381, p: 0.0000, hits: 10, sig: '***'  },
+  { label: 'GloVe Twitter — "a"',                        rho:  0.1593, p: 0.0069, hits: 3,  sig: '**'   },
+  { label: 'W2V Google News — "A"',                      rho:  0.1012, p: 0.0877, hits: 3,  sig: 'n.s.' },
+  { label: 'W2V Google News — "letter A"',               rho:  0.1132, p: 0.0558, hits: 2,  sig: 'n.s.' },
+  { label: 'W2V Google News — "the letter A"',           rho:  0.0928, p: 0.1173, hits: 4,  sig: 'n.s.' },
 ];
 
 const rt = document.getElementById('results-table');
@@ -862,10 +779,7 @@ const rthrow = rthead.insertRow();
 const rtbody = rt.createTBody();
 RESULTS.forEach(r => {
   const tr = rtbody.insertRow();
-  if (r.best)         tr.className = 'best-row';
-  else if (r.type === 'gpt')     tr.className = 'gpt-row';
-  else if (r.type === 'roberta') tr.className = 'roberta-row';
-  else if (r.type === 'voyage')  tr.className = 'voyage-row';
+  if (r.best) tr.className = 'best-row';
 
   [
     r.label,
@@ -880,7 +794,7 @@ RESULTS.forEach(r => {
       const pct    = Math.max(0, r.rho / maxRho * 100);
       td.innerHTML = `<div class="rho-bar">
         <span style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;min-width:50px">${r.rho >= 0 ? '+' : ''}${r.rho.toFixed(3)}</span>
-        <div class="rho-track"><div class="rho-fill" style="width:${pct}%;background:${r.rho < 0 ? '#e63946' : '#f4a261'}"></div></div>
+        <div class="rho-track"><div class="rho-fill" style="width:${pct}%"></div></div>
       </div>`;
     } else if (ci === 4) {
       const isSig = r.sig !== 'n.s.';
@@ -893,9 +807,9 @@ RESULTS.forEach(r => {
 
 // ── Phrasing vis ──────────────────────────────────────────────────────────
 const phrasings = [
-  { label: '"A" / "red"',                  rho: 0.1024, color: '#f0ece4', fill: '#ccc',     textColor: '#666' },
-  { label: '"letter A" / "red"',           rho: 0.4329, color: '#fff3e8', fill: '#f4a261',  textColor: '#fff' },
-  { label: '"the letter A" / "the color"', rho: 0.3381, color: '#fff3e8', fill: '#e88a3a',  textColor: '#fff' },
+  { label: '"A" / "red"',                  rho: 0.1024, fill: '#c9c6bd', textColor: '#3a3a3a' },
+  { label: '"letter A" / "red"',           rho: 0.4329, fill: '#3a6ea5', textColor: '#fff' },
+  { label: '"the letter A" / "the color"', rho: 0.3381, fill: '#5a86ae', textColor: '#fff' },
 ];
 const pv = document.getElementById('phrasing-vis');
 phrasings.forEach(p => {
@@ -939,7 +853,7 @@ DATA.letters.forEach(l => {
 
   // Letter
   const lbl = document.createElement('div');
-  lbl.style.cssText = 'font-family:"Playfair Display",serif;font-weight:700;font-size:0.9rem;display:flex;align-items:center;padding-right:6px';
+  lbl.style.cssText = 'font-family:"Source Serif 4",Georgia,serif;font-weight:600;font-size:0.9rem;display:flex;align-items:center;padding-right:6px';
   lbl.textContent = l;
   grid.appendChild(lbl);
 
@@ -947,13 +861,13 @@ DATA.letters.forEach(l => {
   [HITS_LA, HITS_TL].forEach(hitSet => {
     const cell = document.createElement('div');
     const hit  = hitSet.has(l);
-    cell.style.cssText = `width:34px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;`;
+    cell.style.cssText = `width:34px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;`;
     if (hit) {
       cell.style.background = hex;
       cell.style.color = isDark ? '#fff' : '#111';
       cell.textContent = '✓';
     } else {
-      cell.style.background = '#f0ece4';
+      cell.style.background = '#efeee9';
       cell.style.color = '#ccc';
       cell.textContent = '–';
     }
@@ -962,12 +876,6 @@ DATA.letters.forEach(l => {
 });
 
 container.appendChild(grid);
-
-// ── Scroll fade-in ────────────────────────────────────────────────────────
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
