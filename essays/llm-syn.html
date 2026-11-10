@@ -481,16 +481,16 @@ footer a { color: var(--muted); }
       <div class="label">letter–color pairs tested</div>
     </div>
     <div class="stat-card">
-      <div class="num">12</div>
+      <div class="num">13</div>
       <div class="label">embedding conditions</div>
     </div>
     <div class="stat-card">
-      <div class="num">ρ = .43</div>
-      <div class="label">best Spearman correlation</div>
+      <div class="num">ρ = .29</div>
+      <div class="label">best baseline-corrected Spearman correlation</div>
     </div>
     <div class="stat-card">
-      <div class="num">10 / 26</div>
-      <div class="label">best hit rate (38%)</div>
+      <div class="num">9 / 26</div>
+      <div class="label">best hit rate (35%, chance ≈ 2.4)</div>
     </div>
   </div>
 </section>
@@ -501,7 +501,7 @@ footer a { color: var(--muted); }
 <section class="wide">
   <p class="section-label">Interactive</p>
   <h2>Explore the similarity matrices</h2>
-  <p>Toggle between the synesthesia frequency data and each embedding condition. Color intensity reflects the value. Red is for frequency, green for Word2Vec, purple for RoBERTa, teal for Voyage, blue for GPT. Hover any cell for details.</p>
+  <p>Toggle between the synesthesia frequency data and each embedding condition. The matrices show raw cosine similarities, before the baseline correction described below. Color intensity reflects the value. Red is for frequency, green for Word2Vec, purple for RoBERTa, teal for Voyage, blue for GPT. Hover any cell for details.</p>
 
   <div class="matrix-controls">
     <button class="matrix-btn active" onclick="showMatrix('freq', this)">Synesthesia frequency</button>
@@ -528,19 +528,20 @@ footer a { color: var(--muted); }
 <section>
   <p class="section-label">Results</p>
   <h2>How well does each model predict synesthetic associations?</h2>
-  <p>Spearman ρ measures overall rank correlation across all 286 letter–color pairs. Hit rate counts how often the model's top-similarity color for each letter matches the most common synesthetic color.</p>
+  <p>Both matrices carry baselines that say nothing about which letter goes with which color. Synesthetes pick some colors (blue, orange, yellow) more often for every letter, and some color words sit closer to every letter in embedding space. GPT with "letter A" / "red", for instance, puts orange closest to 16 of the 26 letters. When these two baselines happen to line up, a raw correlation goes up even if the model knows nothing letter-specific.</p>
+  <p>To correct for this, both matrices are double-centered (the mean of every letter row and every color column is removed) before computing Spearman ρ across the 286 letter–color pairs. Significance comes from a permutation test: the model's letters are shuffled 10,000 times, which keeps every baseline intact and breaks only the letter–color pairing. p-values are Holm-corrected across the 13 conditions. The 95% confidence intervals come from resampling the 26 letters with replacement; with only 26 letters they are wide, so small differences between models should not be read as a ranking. Hit rate counts how often the color that is <em>unusually</em> close to a letter (similarity minus that color's average over all letters) matches the most common synesthetic color.</p>
 
   <div class="results-table-wrap">
     <table class="results" id="results-table"></table>
   </div>
-  <p style="font-size:0.8rem; color:var(--muted); margin-top:0.75rem">Chance baseline for hit rate: 1/11 ≈ 9% (~2–3 / 26 letters)</p>
+  <p style="font-size:0.8rem; color:var(--muted); margin-top:0.75rem">Raw ρ = uncorrected correlation, shown for comparison. Chance for hit rate: shuffling letters gives about 2–3 / 26 on average; always guessing the single most common modal color (yellow) gets 5 / 26. Only the two GPT phrased conditions have hit rates above chance after correction (p &lt; .01).</p>
 </section>
 
 <!-- ── PHRASING EFFECT ────────────────────────────────────────────────────── -->
 <section>
   <p class="section-label">Key finding</p>
   <h2>The phrasing effect (GPT)</h2>
-  <p>The three GPT conditions use the same model and the same 26 letters, changing only the wording. Asking for <span class="inline-code">"the letter A"</span> instead of bare <span class="inline-code">"A"</span> shifts the correlation from near-zero to strongly significant. RoBERTa-large shows the same jump (ρ = 0.41 with full phrasing), while Word2Vec is flat regardless.</p>
+  <p>The three GPT conditions use the same model and the same 26 letters, changing only the wording. Asking for <span class="inline-code">"the letter A"</span> / <span class="inline-code">"the color red"</span> instead of bare <span class="inline-code">"A"</span> / <span class="inline-code">"red"</span> doubles the baseline-corrected correlation, from a weak ρ = 0.15 to ρ = 0.29. Voyage-3 shows the same increase (0.13 → 0.22). RoBERTa-large trends the same way (0.07 → 0.17), but its increase is within noise. A paired bootstrap over letters confirms the gain from bare to full phrasing for GPT (Δρ = +0.15, 95% CI +0.03 to +0.27) and Voyage-3 (+0.09, CI +0.01 to +0.15), but not for RoBERTa-large (+0.10, CI −0.08 to +0.27). Word2Vec and GloVe show no letter-specific signal in any phrasing. The bars show the corrected ρ and the faint marker shows the raw value. Uncorrected, the jump looked much larger (0.10 → 0.43), mostly because of a color baseline in the "letter A" condition.</p>
 
   <div class="phrasing-vis" id="phrasing-vis"></div>
 </section>
@@ -549,7 +550,7 @@ footer a { color: var(--muted); }
 <section>
   <p class="section-label">Per-letter breakdown</p>
   <h2>Which letters does GPT get right?</h2>
-  <p>For each letter, did the model's top-similarity color match the most common synesthetic color? Cell color = that letter's modal synesthetic color.</p>
+  <p>For each letter, did the color that is unusually close to it in the model (after removing each color's average similarity) match the most common synesthetic color? Cell color = that letter's modal synesthetic color. No model gets A → Red, the most consistent association in the data (54% of synesthetes).</p>
   <p style="font-size:0.82rem; color:var(--muted); margin-bottom:1rem">Left = GPT "letter A" / "red" &nbsp;|&nbsp; Right = GPT "the letter A" / "the color red"</p>
   <div id="hits-grid-container"></div>
 </section>
@@ -560,38 +561,38 @@ footer a { color: var(--muted); }
 <section>
   <p class="section-label">Methods</p>
   <h2>Embedding models used</h2>
-  <p>Five model families were tested, each in one or more phrasing conditions. For each condition, cosine similarity was computed between every letter embedding and every color embedding, producing a 26 × 11 matrix.</p>
+  <p>Five model families were tested, each in one or more phrasing conditions. For each condition, cosine similarity was computed between every letter embedding and every color embedding, producing a 26 × 11 matrix. All ρ values below are baseline-corrected.</p>
 
   <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; margin:2rem 0">
 
     <div style="background:#fff; border:1px solid var(--border); border-radius:4px; padding:1.3rem">
       <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Static</div>
       <div style="font-family:'Source Serif 4',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">Word2Vec</div>
-      <p style="font-size:0.85rem;color:#555;margin:0">Distributional embeddings trained by predicting surrounding words. Tested on Google News (3B words) and a custom literary corpus (~50 Project Gutenberg novels). Vectors are fixed — context has no effect. Phrasing a query as "letter A" is done by averaging the vectors for "letter" and "A".</p>
+      <p style="font-size:0.85rem;color:#555;margin:0">Distributional embeddings trained by predicting surrounding words. Tested on Google News (3B words) and a custom literary corpus (~50 Project Gutenberg novels). Vectors are fixed — context has no effect. Phrasing a query as "letter A" is done by averaging the vectors for "letter" and "A". No letter-specific signal in any phrasing (ρ ≈ −0.08).</p>
     </div>
 
     <div style="background:#fff; border:1px solid var(--border); border-radius:4px; padding:1.3rem">
       <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Static</div>
       <div style="font-family:'Source Serif 4',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">GloVe Twitter</div>
-      <p style="font-size:0.85rem;color:#555;margin:0">Global Vectors for Word Representation, trained on 2B tweets (200-dimensional). The informal, culturally-saturated nature of Twitter text makes this the strongest static baseline, with a small but significant correlation (ρ = 0.16).</p>
+      <p style="font-size:0.85rem;color:#555;margin:0">Global Vectors for Word Representation, trained on 2B tweets (200-dimensional). Tested on lowercase letters ("a"), since the vocabulary is lowercased. Like Word2Vec, it shows no letter-specific signal (ρ = −0.02).</p>
     </div>
 
     <div style="background:#fff; border:1px solid var(--border); border-radius:4px; padding:1.3rem">
       <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Contextual · Large</div>
       <div style="font-family:'Source Serif 4',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">RoBERTa-large</div>
-      <p style="font-size:0.85rem;color:#555;margin:0"><span class="inline-code">all-roberta-large-v1</span> via Sentence Transformers. A 24-layer BERT-style encoder fine-tuned for semantic similarity. Shows the same phrasing effect as GPT: near-zero with bare letters, ρ = 0.41 with "the letter A" — and uniquely gets A → Red correct.</p>
+      <p style="font-size:0.85rem;color:#555;margin:0"><span class="inline-code">all-roberta-large-v1</span> via Sentence Transformers. A 24-layer BERT-style encoder fine-tuned for semantic similarity. Shows the same phrasing effect as GPT: near-zero with bare letters, ρ = 0.17 with "the letter A". Its raw correlation in that condition (0.41) was mostly baseline.</p>
     </div>
 
     <div style="background:#fff; border:1px solid var(--border); border-radius:4px; padding:1.3rem">
       <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Contextual · Retrieval</div>
       <div style="font-family:'Source Serif 4',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">Voyage-3</div>
-      <p style="font-size:0.85rem;color:#555;margin:0">Voyage AI's general-purpose retrieval model. Shows significant signal with full phrasing (ρ = 0.22, p &lt; 0.001), weaker than GPT or RoBERTa. Bare and "letter A" conditions are flat. The phrasing effect is present but attenuated.</p>
+      <p style="font-size:0.85rem;color:#555;margin:0">Voyage AI's general-purpose retrieval model. The second-strongest model after correction: ρ = 0.22 with full phrasing (p &lt; .01) and 0.18 with "letter A". Bare letters are weaker (0.13, not significant). Its raw numbers barely changed, so its signal was never a baseline artifact.</p>
     </div>
 
     <div style="background:#fff; border:1px solid var(--border); border-radius:4px; padding:1.3rem">
       <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Contextual · LLM</div>
       <div style="font-family:'Source Serif 4',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">GPT (text-embedding-3-small)</div>
-      <p style="font-size:0.85rem;color:#555;margin:0">OpenAI's <span class="inline-code">text-embedding-3-small</span>. The strongest overall performer (ρ = 0.43 with "letter A"). Gets 10/26 modal colors right with the full "the letter A" / "the color" phrasing — the highest hit rate — but misses A → Red in all three conditions.</p>
+      <p style="font-size:0.85rem;color:#555;margin:0">OpenAI's <span class="inline-code">text-embedding-3-small</span>. The strongest overall performer: ρ = 0.29 with the full "the letter A" / "the color" phrasing, and the only model whose hit rate beats chance (9/26 and 8/26 for the two phrased conditions, against about 2.4 expected). Misses A → Red in all three conditions.</p>
     </div>
 
   </div>
@@ -754,27 +755,31 @@ function buildMatrix(key) {
 buildMatrix('freq');
 
 // ── Results table ──────────────────────────────────────────────────────────
+// Baseline-corrected values from baseline_corrected.py in the synesthesia-embeddings repo.
+// rho = Spearman on double-centered matrices; p = letter-shuffle permutation test, Holm-corrected;
+// hits = color-centered argmax; raw = uncorrected Spearman, for comparison.
 const RESULTS = [
-  { label: 'RoBERTa-large — "A"',                        rho:  0.1031, p: 0.0817, hits: 4,  sig: 'n.s.' },
-  { label: 'RoBERTa-large — "letter A"',                 rho:  0.1030, p: 0.0820, hits: 3,  sig: 'n.s.' },
-  { label: 'RoBERTa-large — "the letter A"',             rho:  0.4079, p: 0.0000, hits: 6,  sig: '***'  },
-  { label: 'Voyage-3 — "A"',                             rho:  0.0864, p: 0.1450, hits: 6,  sig: 'n.s.' },
-  { label: 'Voyage-3 — "letter A"',                      rho:  0.0455, p: 0.4439, hits: 7,  sig: 'n.s.' },
-  { label: 'Voyage-3 — "the letter A"',                  rho:  0.2226, p: 0.0001, hits: 6,  sig: '***'  },
-  { label: 'GPT — "A" / "red"',                          rho:  0.1024, p: 0.0838, hits: 4,  sig: 'n.s.' },
-  { label: 'GPT — "letter A" / "red"',                   rho:  0.4329, p: 0.0000, hits: 5,  sig: '***', best: true },
-  { label: 'GPT — "the letter A" / "the color"',         rho:  0.3381, p: 0.0000, hits: 10, sig: '***'  },
-  { label: 'GloVe Twitter — "a"',                        rho:  0.1593, p: 0.0069, hits: 3,  sig: '**'   },
-  { label: 'W2V Google News — "A"',                      rho:  0.1012, p: 0.0877, hits: 3,  sig: 'n.s.' },
-  { label: 'W2V Google News — "letter A"',               rho:  0.1132, p: 0.0558, hits: 2,  sig: 'n.s.' },
-  { label: 'W2V Google News — "the letter A"',           rho:  0.0928, p: 0.1173, hits: 4,  sig: 'n.s.' },
+  { label: 'RoBERTa-large — "A"',                        raw:  0.103, rho:  0.071, ci: [-0.030, 0.182], p: 0.3025, hits: 1,  sig: 'n.s.' },
+  { label: 'RoBERTa-large — "letter A"',                 raw:  0.103, rho:  0.113, ci: [-0.003, 0.227], p: 0.2532, hits: 3,  sig: 'n.s.' },
+  { label: 'RoBERTa-large — "the letter A"',             raw:  0.408, rho:  0.170, ci: [0.034, 0.303], p: 0.0261, hits: 5,  sig: '*'    },
+  { label: 'Voyage-3 — "A"',                             raw:  0.091, rho:  0.134, ci: [-0.014, 0.309], p: 0.1813, hits: 7,  sig: 'n.s.' },
+  { label: 'Voyage-3 — "letter A"',                      raw:  0.051, rho:  0.180, ci: [0.060, 0.321], p: 0.0290, hits: 5,  sig: '*'    },
+  { label: 'Voyage-3 — "the letter A"',                  raw:  0.223, rho:  0.222, ci: [0.085, 0.367], p: 0.0024, hits: 5,  sig: '**'   },
+  { label: 'GPT — "A" / "red"',                          raw:  0.102, rho:  0.146, ci: [0.025, 0.296], p: 0.0720, hits: 5,  sig: 'n.s.' },
+  { label: 'GPT — "letter A" / "red"',                   raw:  0.433, rho:  0.193, ci: [0.073, 0.344], p: 0.0187, hits: 8,  sig: '*'    },
+  { label: 'GPT — "the letter A" / "the color"',         raw:  0.338, rho:  0.294, ci: [0.191, 0.436], p: 0.0013, hits: 9,  sig: '**', best: true },
+  { label: 'GloVe Twitter — "a"',                        raw: -0.016, rho: -0.020, ci: [-0.115, 0.070], p: 1.0000, hits: 2,  sig: 'n.s.' },
+  { label: 'W2V Google News — "A"',                      raw:  0.101, rho: -0.078, ci: [-0.186, 0.045], p: 1.0000, hits: 3,  sig: 'n.s.' },
+  { label: 'W2V Google News — "letter A"',               raw:  0.113, rho: -0.083, ci: [-0.190, 0.046], p: 1.0000, hits: 3,  sig: 'n.s.' },
+  { label: 'W2V Google News — "the letter A"',           raw:  0.093, rho: -0.079, ci: [-0.187, 0.051], p: 1.0000, hits: 3,  sig: 'n.s.' },
 ];
 
 const rt = document.getElementById('results-table');
 const rthead = rt.createTHead();
 const rthrow = rthead.insertRow();
-['Model', 'Spearman ρ', 'p-value', 'Hits / 26', 'Sig.'].forEach(h => {
-  const th = document.createElement('th'); th.textContent = h; rthrow.appendChild(th);
+const RHO = '<span style="text-transform:none">ρ</span>';
+['Model', `Corrected ${RHO}`, `Raw ${RHO}`, 'p-value', 'Hits / 26', 'Sig.'].forEach(h => {
+  const th = document.createElement('th'); th.innerHTML = h; rthrow.appendChild(th);
 });
 const rtbody = rt.createTBody();
 RESULTS.forEach(r => {
@@ -784,19 +789,23 @@ RESULTS.forEach(r => {
   [
     r.label,
     null,
+    null,
     r.p < 0.001 ? '< 0.001' : r.p.toFixed(4),
     `${r.hits} / 26  (${Math.round(r.hits/26*100)}%)`,
     null
   ].forEach((val, ci) => {
     const td = tr.insertCell();
     if (ci === 1) {
-      const maxRho = 0.45;
+      const maxRho = 0.35;
       const pct    = Math.max(0, r.rho / maxRho * 100);
       td.innerHTML = `<div class="rho-bar">
         <span style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;min-width:50px">${r.rho >= 0 ? '+' : ''}${r.rho.toFixed(3)}</span>
         <div class="rho-track"><div class="rho-fill" style="width:${pct}%"></div></div>
-      </div>`;
-    } else if (ci === 4) {
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);margin-top:3px">95% CI ${r.ci[0].toFixed(2)} to ${r.ci[1].toFixed(2)}</div>`;
+    } else if (ci === 2) {
+      td.innerHTML = `<span style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--muted)">${r.raw >= 0 ? '+' : ''}${r.raw.toFixed(3)}</span>`;
+    } else if (ci === 5) {
       const isSig = r.sig !== 'n.s.';
       td.innerHTML = `<span class="sig-badge ${isSig ? 'sig' : 'ns'}">${r.sig}</span>`;
     } else {
@@ -807,14 +816,15 @@ RESULTS.forEach(r => {
 
 // ── Phrasing vis ──────────────────────────────────────────────────────────
 const phrasings = [
-  { label: '"A" / "red"',                  rho: 0.1024, fill: '#c9c6bd', textColor: '#3a3a3a' },
-  { label: '"letter A" / "red"',           rho: 0.4329, fill: '#3a6ea5', textColor: '#fff' },
-  { label: '"the letter A" / "the color"', rho: 0.3381, fill: '#5a86ae', textColor: '#fff' },
+  { label: '"A" / "red"',                  rho: 0.146, raw: 0.102, fill: '#c9c6bd', textColor: '#3a3a3a' },
+  { label: '"letter A" / "red"',           rho: 0.193, raw: 0.433, fill: '#5a86ae', textColor: '#fff' },
+  { label: '"the letter A" / "the color"', rho: 0.294, raw: 0.338, fill: '#3a6ea5', textColor: '#fff' },
 ];
 const pv = document.getElementById('phrasing-vis');
 phrasings.forEach(p => {
   const maxRho = 0.50;
   const pct = Math.max(3, (p.rho / maxRho) * 100);
+  const rawPct = (p.raw / maxRho) * 100;
   pv.innerHTML += `
     <div class="phrasing-row">
       <div class="phrasing-label">${p.label}</div>
@@ -822,14 +832,15 @@ phrasings.forEach(p => {
         <div class="phrasing-fill" style="width:${pct}%;background:${p.fill};color:${p.textColor}">
           ${p.rho >= 0.15 ? 'ρ = ' + p.rho.toFixed(3) : ''}
         </div>
+        <div title="raw ρ = ${p.raw.toFixed(3)}" style="position:absolute;top:0;bottom:0;left:${rawPct}%;width:2px;background:var(--muted);opacity:0.5"></div>
       </div>
       <div class="phrasing-rho">${p.rho >= 0 ? '+' : ''}${p.rho.toFixed(3)}</div>
     </div>`;
 });
 
 // ── Hits grid ─────────────────────────────────────────────────────────────
-const HITS_LA  = new Set(['B','H','N','R','Y']);
-const HITS_TL  = new Set(['B','C','E','G','I','Q','R','V','X','Y']);
+const HITS_LA  = new Set(['E','I','N','Q','R','V','X','Y']);
+const HITS_TL  = new Set(['E','G','I','Q','R','V','X','Y','Z']);
 
 const container = document.getElementById('hits-grid-container');
 const grid = document.createElement('div');
